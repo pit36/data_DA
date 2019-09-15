@@ -15,8 +15,8 @@ args = parser.parse_args()
 plt.figure()
 
 dirList = []
-folder = ['5', '10', '20' , '30']
-load = '5'
+folder = ['1','2','3','5', '10', '20' , '30']
+load = '10'
 steps = 30
 for fld in folder:
     print(fld)
@@ -71,6 +71,7 @@ for fld in folder:
     yerrdown = []
     for dataPoint in dataPointList:
         avg = np.average(dataPointList[dataPoint])
+        #avg = np.percentile(dataPointList[dataPoint], 50)
         up = np.percentile(dataPointList[dataPoint], 95)
         down = np.percentile(dataPointList[dataPoint], 5)
         # std = np.std(dataPointList[dataPoint])
@@ -86,10 +87,10 @@ for fld in folder:
     yerrdown = yerrdown[:steps]
 
     plt.plot(x, y, label='{}'.format(fld))
-    plt.fill_between(x, yerrup, yerrdown, alpha=.2)
+    #plt.fill_between(x, yerrup, yerrdown, alpha=.2)
 
 plt.xlabel('Steps')
-plt.ylabel('Average Reward')
-plt.savefig('Average_Reward.pdf')
+plt.ylabel('Average Latency')
+plt.savefig('Average_Latency.pdf')
 plt.legend(loc='lower right')
 plt.show()
