@@ -118,5 +118,5 @@ for fld in folder:
 plt.xlabel('Steps')
 plt.ylabel('Average Reward')
 plt.savefig('Average_Reward.pdf')
-plt.legend(loc='lower right')
+plt.legend()
 plt.show()
