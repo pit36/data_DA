@@ -20,7 +20,7 @@ plt.figure()
 
 dirList = []
 onlyDir = []
-folder = ['Q_L']
+folder = ['Q_L', 'SPF']
 steps = 30
 for fld in folder:
     dirsss = os.listdir(fld)
@@ -51,7 +51,7 @@ for fld in folder:
                 rowIterator = 0
                 for row in reader:
                     if '#' not in row[0]:
-                        if int(row[0]) < 50000 and rowIterator > 50:
+                        if int(row[0]) < 50000 and rowIterator > 100:
                             rewardList.append(float(row[1]))
                             stepList.append(int(row[0]))
                         rowIterator = rowIterator + 1 
