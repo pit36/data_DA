@@ -13,7 +13,7 @@ args = parser.parse_args()
 plt.figure()
 
 dirList= []
-folder = ['q_learning']
+folder = ['q_learning', 'sarsa']
 steps = 30
 for fld in folder:
 	print(fld)

@@ -4,7 +4,7 @@ import argparse
 import os
 import numpy as np
 import math
-
+import copy
 parser = argparse.ArgumentParser(description='Plotting Reward')
 parser.add_argument('--load_level', default=0, type=int,
                     help='Set if there are different load levels, 1 is with changing load levels')
@@ -14,12 +14,14 @@ args = parser.parse_args()
 
 plt.figure()
 
-dirList = []
-folder = ['Softmax/1','Softmax/2','Softmax/3','Softmax/5', 'Softmax/10', 'Softmax/20', 'eps_greedy/0.1','eps_greedy/0.2','eps_greedy/0.3']
-load = '10'
+
+folder = ['Softmax/1','Softmax/2','Softmax/3','Softmax/5', 'Softmax/10', 'Softmax/20', 'eps_greedy/0.1','eps_greedy/0.2','eps_greedy/0.3', 'UCB/30', 'UCB/50', 'UCB/100']
+#folder = ['Softmax/3']
+load = '5'
 steps = 30
 for fld in folder:
     print(fld)
+    dirList = []
     dirss = os.listdir(fld)
     # folderStr = fld + '/' + dirss
     for dir in dirss:
@@ -50,19 +52,19 @@ for fld in folder:
             lowest = len(data[0])
         if highest < len(data[0]):
             highest = len(data[0])
-    steps = int(lowest // average)
+    steps = 500#int(highest // average)
     dataPointList = {}
-    for step in range(0, steps):
-        lowBorder = step * average
-        highBorder = (step + 1) * average
-        dataPointList[step] = []
-        for data in dataList:
-            dataArray = []
-            #for x in range(lowBorder, highBorder):
-            if step < len(data[1]):
-                dataArray.append(data[1][lowBorder])
-            dataPointList[step].append(np.average(dataArray))
 
+    for step in range(0, steps):
+        if step > lowest:
+            a=0
+        dataPointList[step] = []
+        dataArray = []
+        for data in dataList:
+            if step < len(data[1]):
+                dataArray.append(data[1][step])
+        dataPointList[step] = (copy.deepcopy(dataArray))
+    print("DPL: {}".format(len(dataPointList)))
     x = []
     y = []
     yerr = []
@@ -71,15 +73,17 @@ for fld in folder:
     for dataPoint in dataPointList:
         avg = np.average(dataPointList[dataPoint])
         #avg = np.percentile(dataPointList[dataPoint], 50)
-        up = np.percentile(dataPointList[dataPoint], 95)
-        down = np.percentile(dataPointList[dataPoint], 5)
+        #up = np.percentile(dataPointList[dataPoint], 95)
+        #down = np.percentile(dataPointList[dataPoint], 5)
         # std = np.std(dataPointList[dataPoint])
         # yerr.append(std)
-        yerrup.append(up)
-        yerrdown.append(down)
+        #yerrup.append(up)
+        #yerrdown.append(down)
         y.append(avg)
         x.append(dataPoint)
-
+    print("x: {}".format(len(x)))
+    print("y: {}".format(len(y)))
+    print("Cut: {}".format(y[400:500]))
     x = x[:steps]
     y = y[:steps]
     yerrup = yerrup[:steps]
@@ -87,7 +91,6 @@ for fld in folder:
     print("Highest: {}, lowest: {}".format(highest, lowest))
     plt.plot(x, y, label='{}'.format(fld))
     #plt.fill_between(x, yerrup, yerrdown, alpha=.2)
-
 plt.xlabel('Steps')
 plt.ylabel('Average Latency')
 plt.legend(loc='lower right')
