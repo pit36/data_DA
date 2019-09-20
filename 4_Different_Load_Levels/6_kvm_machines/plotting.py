@@ -23,6 +23,10 @@ onlyDir = []
 folder = ['Q_L', 'SPF']
 steps = 30
 for fld in folder:
+    if fld == 'Q_L':
+        i_converged = 100
+    if fld == 'SPF':
+        i_converged = 15
     dirsss = os.listdir(fld)
     dirs = []
     for dir in dirsss:
@@ -51,7 +55,7 @@ for fld in folder:
                 rowIterator = 0
                 for row in reader:
                     if '#' not in row[0]:
-                        if int(row[0]) < 50000 and rowIterator > 100:
+                        if int(row[0]) < 50000 and rowIterator > i_converged:
                             rewardList.append(float(row[1]))
                             stepList.append(int(row[0]))
                         rowIterator = rowIterator + 1 
