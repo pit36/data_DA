@@ -34,8 +34,8 @@ class Config(object):
   qMode = QMode.Q_LEARNING
   alpha = 0.8
   gamma = 0.8
-  epsilon = 0.1
-  temperature = 0.01
+  epsilon = 0.3
+  temperature = 0.05
   # for UCB
   explorationDegree = 50.0
 
